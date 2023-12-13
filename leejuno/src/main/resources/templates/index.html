@@ -11,7 +11,8 @@
     <p>안녕하세요 이준오의 이력서 입니다.</p>
 </header>
 <hr>
-<button onclick="loadDocArray()">이력서보기</button>
+<button id="viewButton" onclick="loadDocArray()">이력서 보기</button>
+<button id="hideButton" style="display:none;" onclick="hideDocArray()">이력서 접기</button>
 <table class="tg">
     <thead>
     <tr>
@@ -21,7 +22,7 @@
         <th class="tg-9u18">작성자</th>
     </tr>
     </thead>
-    <tbody id = "t_body">
+    <tbody id="t_body">
    <!-- <tr>-->
 <!--        <td class="tg-baqh">1</td>-->
 <!--        <td class="tg-baqh"> <a href="/about">자기소개</a> </td>-->
@@ -30,29 +31,39 @@
 <!--    </tr> -->
     </tbody>
 </table>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script>
     function loadDocArray() {
-        const xhttp = new XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                const myAjax = JSON.parse(this.responseText);
+        $.ajax({
+            url: "/list",
+            type: "GET",
+            dataType: "json",
+            success: function(myAjax) {
                 console.log(myAjax);
                 /*JSON 데이터 넣기*/
                 let ajaxTD = "";
-                for(let i in myAjax.contents){
+                $.each(myAjax.contents, function(i, content) {
                     ajaxTD += '<tr>';
-                    ajaxTD += '<td class="tg-baqh">'+ myAjax.contents[i].no +'</td>';
-                    ajaxTD += '<td class="tg-baqh"> <a href="/about">' + myAjax.contents[i].title + '</a> </td>';
-                    ajaxTD += '<td class="tg-baqh">'+ myAjax.contents[i].date +'</td>';
-                    ajaxTD += '<td class="tg-baqh">'+ myAjax.contents[i].writer +'</td>';
+                    ajaxTD += '<td class="tg-baqh">' + content.no + '</td>';
+                    ajaxTD += '<td class="tg-baqh"><a href="/about">' + content.title + '</a></td>';
+                    ajaxTD += '<td class="tg-baqh">' + content.date + '</td>';
+                    ajaxTD += '<td class="tg-baqh">' + content.writer + '</td>';
                     ajaxTD += '</tr>';
-                }
-                document.getElementById("t_body").innerHTML = ajaxTD;
+                });
+                $("#t_body").html(ajaxTD);
+                $("#viewButton").hide();  // "이력서보기" 버튼 감춤
+                $("#hideButton").show();  // "이력서접기" 버튼 표시
+            },
+            error: function(xhr, textStatus, errorThrown) {
+                console.error("Error fetching data:", textStatus, errorThrown);
             }
-        };
-    
-    xhttp.open("GET", "/list");
-    xhttp.send();
+        });
+    }
+
+    function hideDocArray() {
+        $("#t_body").html("");  // 테이블 내용을 비움
+        $("#hideButton").hide();  // "이력서접기" 버튼 감춤
+        $("#viewButton").show();  // "이력서보기" 버튼 표시
     }
 </script>
 </body>
