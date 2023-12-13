@@ -11,7 +11,7 @@
     <p>안녕하세요 이준오의 이력서 입니다.</p>
 </header>
 <hr>
-<button><a href="/list">이력서보기</a></button>
+<button onclick="loadDocArray()">이력서보기</button>
 <table class="tg">
     <thead>
     <tr>
@@ -28,24 +28,6 @@
 <!--        <td class="tg-baqh">2023-12-12</td>-->
 <!--        <td class="tg-baqh">이준오</td>-->
 <!--    </tr> -->
-<!--    <tr>-->
-<!--        <td class="tg-baqh">2</td>-->
-<!--        <td class="tg-baqh"> <a href="/about">경력</a> </td>-->
-<!--        <td class="tg-baqh">2023-12-12</td>-->
-<!--        <td class="tg-baqh">이준오</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td class="tg-baqh">3</td>-->
-<!--        <td class="tg-baqh"> <a href="/about">학력</a> </td>-->
-<!--        <td class="tg-baqh">2023-12-12</td>-->
-<!--        <td class="tg-baqh">이준오</td>-->
-<!--    </tr>-->
-<!--    <tr>-->
-<!--        <td class="tg-baqh">4</td>-->
-<!--        <td class="tg-baqh"> <a href="/about">프로젝트</a> </td>-->
-<!--        <td class="tg-baqh">2023-12-12</td>-->
-<!--        <td class="tg-baqh">이준오</td>-->
-<!--    </tr>-->
     </tbody>
 </table>
 <script>
@@ -53,7 +35,7 @@
         const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                const myAjax = JSON.parse(this.resopnseText);
+                const myAjax = JSON.parse(this.responseText);
                 console.log(myAjax);
                 /*JSON 데이터 넣기*/
                 let ajaxTD = "";
@@ -71,10 +53,7 @@
     
     xhttp.open("GET", "/list");
     xhttp.send();
-    
-    // xhttp.open("POST", "/list");
-    // xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-}
+    }
 </script>
 </body>
 </html>
